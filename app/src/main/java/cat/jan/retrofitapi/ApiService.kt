@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface ApiService {
     @GET("/2.0/languages")
-    fun getLanguages() : Response<List<Language>>
+    suspend fun getLanguages() : Response<List<Language>>
 }
