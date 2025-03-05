@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "cat.jan.retrofitapi"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "cat.jan.retrofitapi"
