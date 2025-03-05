@@ -1,6 +1,7 @@
 package cat.jan.retrofitapi
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cat.jan.retrofitapi.API.retrofitService
@@ -24,12 +25,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun getLanguages() {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = retrofitService.getLanguages()
+            try {
+                // TODO: retrofitService.getLanguages() provoca "Unable to resolve host "ws.detectlanguage.com": No address associated with hostname"
+                val result = retrofitService.getLanguages()
 
-            if (result.isSuccessful) {
-                languages = result.body() ?: emptyList()
-            } else {
+                if (result.isSuccessful) {
+                    languages = result.body() ?: emptyList()
+                    showSuccess()
+                } else {
+                    showError()
+                }
+            } catch (e: Exception) {
+                Log.e("JAN", "" + e.message )
                 showError()
+            }
+        }
+    }
+
+    private fun showSuccess() {
+        runOnUiThread {
+            if (languages.isNotEmpty()) {
+                Toast.makeText(this, languages[0].name, Toast.LENGTH_SHORT).show()
             }
         }
     }

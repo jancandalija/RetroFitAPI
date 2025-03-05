@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object API {
-    const val BASE_URL = "https://ws.detectlanguage.com/"
+    private const val BASE_URL = "https://ws.detectlanguage.com/"
 
     val retrofitService: ApiService by lazy {
         getRetrofit().create(ApiService::class.java)
