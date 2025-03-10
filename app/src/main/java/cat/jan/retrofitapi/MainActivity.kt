@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTextLanguage(text: String) {
         CoroutineScope(Dispatchers.IO).launch {
+            Thread.sleep(1500)
             val result = retrofitService.getTextLanguage(text)
             if (result.isSuccessful) {
                 checkResult(result.body())
