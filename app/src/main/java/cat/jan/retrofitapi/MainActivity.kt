@@ -20,10 +20,42 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setupListeners()
+    }
+
+    private fun setupListeners() {
         binding.btnInicia.setOnClickListener {
-            getLanguages()
+            val text = binding.edtParaula.text.toString()
+
+            if (text.isNotEmpty()) {
+                getTextLanguage(text)
+            }
         }
-        getLanguages()
+    }
+
+    private fun getTextLanguage(text: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = retrofitService.getTextLanguage(text)
+            if (result.isSuccessful) {
+                checkResult(result.body())
+            } else {
+                showError()
+            }
+        }
+    }
+
+    private fun checkResult(detectionResponse: DetectionResponse?) {
+        if (detectionResponse != null && !detectionResponse.data.detections.isNullOrEmpty()) {
+            val correctLanguages = detectionResponse.data.detections.filter {
+                it.isReliable
+            }
+            if (correctLanguages.isNotEmpty()) {
+                runOnUiThread {
+                    Toast.makeText(this,"L'idioma és: ${correctLanguages.first().language}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun getLanguages() {
