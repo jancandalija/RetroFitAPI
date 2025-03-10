@@ -2,10 +2,13 @@ package cat.jan.retrofitapi
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.transition.Visibility
 import cat.jan.retrofitapi.API.retrofitService
 import cat.jan.retrofitapi.databinding.ActivityMainBinding
+import com.google.android.material.internal.VisibilityAwareImageButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,8 +32,16 @@ class MainActivity : AppCompatActivity() {
             val text = binding.edtParaula.text.toString()
 
             if (text.isNotEmpty()) {
+                binding.edtParaula.text.clear()
+                showLoading(true)
                 getTextLanguage(text)
             }
+        }
+    }
+
+    private fun showLoading(show: Boolean) {
+        runOnUiThread {
+            binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
         }
     }
 
@@ -42,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 showError()
             }
+            showLoading(false)
         }
     }
 
