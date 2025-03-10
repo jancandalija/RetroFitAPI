@@ -20,13 +20,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.btnInicia.setOnClickListener {
+            getLanguages()
+        }
         getLanguages()
     }
 
     private fun getLanguages() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // TODO: retrofitService.getLanguages() provoca "Unable to resolve host "ws.detectlanguage.com": No address associated with hostname"
+                // TODO: retrofitService.getLanguages() provoca
+                //  "Unable to resolve host "ws.detectlanguage.com": No address associated with hostname"
                 val result = retrofitService.getLanguages()
 
                 if (result.isSuccessful) {
