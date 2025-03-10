@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        getLanguages()
         setupListeners()
     }
 
@@ -51,9 +51,15 @@ class MainActivity : AppCompatActivity() {
                 it.isReliable
             }
             if (correctLanguages.isNotEmpty()) {
-                runOnUiThread {
-                    Toast.makeText(this,"L'idioma és: ${correctLanguages.first().language}", Toast.LENGTH_SHORT).show()
+
+                val langName = languages.find { it.code == correctLanguages.first().language }
+
+                if (langName != null) {
+                    runOnUiThread {
+                        Toast.makeText(this,"L'idioma és: ${langName.name}", Toast.LENGTH_SHORT).show()
+                    }
                 }
+
             }
         }
     }
