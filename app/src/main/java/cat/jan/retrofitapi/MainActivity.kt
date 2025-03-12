@@ -47,14 +47,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTextLanguage(text: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            Thread.sleep(1500)
-            val result = retrofitService.getTextLanguage(text)
-            if (result.isSuccessful) {
-                checkResult(result.body())
-            } else {
-                showError()
+            try {
+                Thread.sleep(1500)
+                val result = retrofitService.getTextLanguage(text)
+                if (result.isSuccessful) {
+                    checkResult(result.body())
+                } else {
+                    showError()
+                }
+                showLoading(false)
+            } catch (e: Exception) {
+                Log.e("JAN", "" + e.message)
+                runOnUiThread {
+                    Toast.makeText(applicationContext, "No hi ha connexió", Toast.LENGTH_SHORT).show()
+                }
             }
-            showLoading(false)
         }
     }
 
@@ -93,6 +100,9 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Log.e("JAN", "" + e.message )
                 showError()
+                runOnUiThread {
+                    Toast.makeText(applicationContext, "No hi ha connexió", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
